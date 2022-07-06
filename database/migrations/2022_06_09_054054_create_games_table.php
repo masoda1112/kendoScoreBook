@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('games', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('competitor_name')->nullable();
+            $table->string('competitor_name');
             $table->integer('result_id');
-            $table->time('time')->nullable();
+            $table->time('time');
         });
     }
 

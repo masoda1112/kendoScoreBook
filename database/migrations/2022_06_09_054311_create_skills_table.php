@@ -13,11 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('techs', function (Blueprint $table) {
+        Schema::create('skills', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('part_id');
-            $table->foreignId('opportunity_id');
+            $table->string('name')->unique();
+            $table->string('part_name')->nullable();
+            $table->string('opportunity_name')->nullable();
         });
     }
 
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('techs');
+        Schema::dropIfExists('skills');
     }
 };
