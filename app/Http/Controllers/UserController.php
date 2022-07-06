@@ -63,6 +63,18 @@ class UserController extends Controller
     }
 
     public function index(){
+
+    }
+
+    public function getGameIndex(){
+
+    }
+
+    public function getGame(){
+
+    }
+
+    public function addGame(){
         
     }
 
