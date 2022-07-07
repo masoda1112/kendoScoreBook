@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
             $table->string('competitor_name');
             $table->integer('result_id');
-            $table->time('time');
+            $table->integer('time');
         });
     }
 

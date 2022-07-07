@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreignId('skill_id');
             $table->foreignId('game_id');
             $table->string('opportunity_name')->nullable();
+            $table->string('part_name')->nullable();
+            $table->boolean('valid');
         });
     }
 

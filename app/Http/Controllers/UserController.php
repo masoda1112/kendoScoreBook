@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
+use Http\Controllers\SkillController;
+use Http\Controllers\GameController;
+use Http\Controllers\AttackController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -63,27 +66,55 @@ class UserController extends Controller
     }
 
     public function index(){
-
+        $user = Auth::id();
+        // winRate,AttackCount,validAttackRate,SkillRate,ValidSkillRate
     }
 
     public function getGameIndex(){
+        $user = User::find(Auth::id());
+        $gameList = GameController::index($user);
+        response()->json([
+            'games'=> $gameList
+        ]);
+    }
+
+    public function getGame(Request $request){
+        $user = User::find(Auth::id());
+        $gameOverView = GameController::show($user, $request->gameId);
+        $skills = GameController::calculateSkillRate();
+        response()->json([
+            "overView" => $gameOverView,
+            "skillRate" => $skills
+        ]);
+    }
+
+    public function addGame(Request $request){
+        $game = GameController::create($request);
+        Auth::user()->games()->createMany([$request->all()]);
 
     }
 
-    public function getGame(){
-
+    private function calculateWinRate($games){
+        // winRate,validAttackRate,attackCount,
+        $winCount = 0;
+        $total = 0;
+        $attackCount = 0;
+        $validAttackCount = 0;
+        $gameTime = 0;
+        foreach ($games as $game) {
+            $total += 1;
+            $gameTime += $game->time;
+            if($game->result_id == 0) $winCount += 1;
+            foreach($game->attacks() as $attack){
+                $attackCount += 1;
+                if($attack->valid) $validAttackCount += 1;
+            }
+        }
+        return array("winCount" => $winCount, "total" => $total); 
     }
 
-    public function addGame(){
+    private function calculateAttackCount($games){
         
-    }
-
-    private function calculateWinRate(){
-
-    }
-
-    private function calculateAttackCount(){
-
     }
 
     private function calculateValidAttackRate(){

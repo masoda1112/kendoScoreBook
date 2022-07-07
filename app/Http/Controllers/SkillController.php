@@ -15,4 +15,8 @@ class SkillController extends Controller
     public function index(){
 
     }
+
+    public function show($skillId){
+        return Skill::find($skillId);
+    }
 }
