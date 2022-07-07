@@ -9,5 +9,9 @@ class Game extends Model
 {
     use HasFactory;
 
+    public function attacks()
+    {
+        return $this->hasMany(Attacks::class);
+    }
     
 }

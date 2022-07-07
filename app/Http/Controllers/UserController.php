@@ -67,7 +67,8 @@ class UserController extends Controller
 
     public function index(){
         $user = Auth::id();
-        // winRate,AttackCount,validAttackRate,SkillRate,ValidSkillRate
+        $response = $this->buildResponseData($user);
+        response()->json($response);
     }
 
     public function getGameIndex(){
@@ -94,40 +95,64 @@ class UserController extends Controller
 
     }
 
-    private function calculateWinRate($games){
-        // winRate,validAttackRate,attackCount,
+    private function buildResponseData($user){
+        // 完結：winRate,validAttackRate,attackCount
+        // 補助：caluculateSkillRate,calculateValidSkillRate
         $winCount = 0;
         $total = 0;
-        $attackCount = 0;
-        $validAttackCount = 0;
         $gameTime = 0;
+        $games = $user->games();
+        $attaks = [];
         foreach ($games as $game) {
             $total += 1;
             $gameTime += $game->time;
             if($game->result_id == 0) $winCount += 1;
-            foreach($game->attacks() as $attack){
-                $attackCount += 1;
-                if($attack->valid) $validAttackCount += 1;
+            $attaks = $this->calculateAttacks($game);
+        }
+
+        return array(
+            "winGameCount" => $winCount,
+            "totalGameCount" => $total,
+            "validAttackCount" => $attaks["validAttackCount"],
+            "attackCount" => $attaks["attackCount"],
+            "totalGameTime" => $gameTime,
+            "skillRate" => $attaks["skillRate"],
+            "validSkillRate" => $attaks["validSkillRate"],
+        );
+    }
+
+    private function calculateAttacks(Game $game){
+        $attackCount = 0;
+        $validAttackCount = 0;
+        $skillRate = [];
+        $validSkillRate = [];
+        foreach($game->attacks() as $attack){
+            $attackCount += 1;
+            $skillName = $attack->skill()->name;
+
+            if(!($skillRate[$skillName])){
+                $skillRate += array($skillName => 1);
+            }else{
+                $skillRate[$skillName] += 1;
+            }
+
+            if($attack->valid){
+                $validAttackCount += 1;
+
+                if(!($validSkillRate[$skillName])){
+                    $validSkillRate += array($skillName => 1);
+                }else{
+                    $validSkillRate[$skillName] += 1;
+                }
             }
         }
-        return array("winCount" => $winCount, "total" => $total); 
+
+        return array(
+            "validAttackCount" => $validAttackCount,
+            "attackCount" => $atackCount,
+            "skillRate" => $skillRate,
+            "validSkillRate" => $validSkillRate,
+        );
     }
-
-    private function calculateAttackCount($games){
-        
-    }
-
-    private function calculateValidAttackRate(){
-
-    }
-
-    private function calculateSkillRate(){
-        
-    }
-
-    private function calculateValidSkillRate(){
-        
-    }
-
 
 }
