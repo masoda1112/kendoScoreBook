@@ -79,20 +79,30 @@ class UserController extends Controller
         ]);
     }
 
-    public function getGame(Request $request){
+    public function getGame(Request $request, $game_id){
         $user = User::find(Auth::id());
-        $gameOverView = GameController::show($user, $request->gameId);
-        $skills = GameController::calculateSkillRate();
-        response()->json([
-            "overView" => $gameOverView,
-            "skillRate" => $skills
-        ]);
+        // game_idはパスから取る
+        $resData = GameController::show($user, $game_id);
+        response()->json($resData);
     }
 
     public function addGame(Request $request){
+        // requestの形{competitor=>"", resultId=>"", time=> "", attacks => [{skill_id => ""}, {},{}] }
         $game = GameController::create($request);
-        Auth::user()->games()->createMany([$request->all()]);
+        // gamesにはcompetitorName,
+        $attacks = [];
+        foreach($request->attacks as $attack){
+            $attacks += array(
+                "skill_id" => $attack->skill_id,
+                "game_id" => $game->id, 
+                "competitor" => $request->$competitor,
+                "valid" => $request->valid
+            );
+        }
 
+        Auth::user()->games()->createMany($attacks);
+
+        response()->json($game);
     }
 
     private function buildResponseData($user){
@@ -103,6 +113,7 @@ class UserController extends Controller
         $gameTime = 0;
         $games = $user->games();
         $attaks = [];
+
         foreach ($games as $game) {
             $total += 1;
             $gameTime += $game->time;
