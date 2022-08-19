@@ -13,16 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('fouls', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->boolean('sex')->nullable();
-            $table->integer('age')->nullable();
-            $table->string('firebase_uid', 255)->unique();
-            $table->longText('access_token')->nullable();
             $table->timestamps();
+            $table->string('name');
+            $table->foreignId('game_id');
+            $table->boolean('competitor');
         });
     }
 
@@ -33,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('fouls');
     }
 };

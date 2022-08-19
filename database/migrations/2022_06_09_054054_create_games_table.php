@@ -18,7 +18,10 @@ return new class extends Migration
             $table->timestamps();
             $table->string('competitor_name');
             $table->integer('result_id');
-            $table->integer('time');
+            $table->integer('tsubazeriai_seconds')->nullable();
+            $table->integer('wakare_count')->nullable();
+            $table->integer('foul_count')->nullable();
+            $table->integer('seconds');
         });
     }
 

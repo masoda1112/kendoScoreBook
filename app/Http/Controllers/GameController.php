@@ -15,7 +15,7 @@ class GameController extends Controller
         $game = new Game();
         $game->competitor_name = $request->competitor_name;
         $game->result_id = $request->result_id;
-        $game->time = $request->time;
+        $game->seconds = $request->seconds;
         // attackを連続で作成&gameに登録
         $game->save();
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Models;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +12,11 @@ class Game extends Model
     public function attacks()
     {
         return $this->hasMany(Attacks::class);
+    }
+
+    public function fouls()
+    {
+        return $this->hasMany(Fouls::class);
     }
     
 }
