@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Foul extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'name',
+        'game_id',
+        'competitor',
+    ];
 }

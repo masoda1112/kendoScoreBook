@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('wakare_count')->nullable();
             $table->integer('foul_count')->nullable();
             $table->integer('seconds');
+            $table->foreignId('user_id');
         });
     }
 
