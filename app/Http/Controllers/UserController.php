@@ -309,6 +309,7 @@ class UserController extends Controller
         // 完結：winRate,validAttackRate,attackCount
         // 補助：caluculateSkillRate,calculateValidSkillRate
         $winCount = 0;
+        $loseCount = 0;
         $total = 0;
         $gameTime = 0;
         $attackCount = 0;
@@ -320,7 +321,12 @@ class UserController extends Controller
         foreach ($user->games as $game) {
             $total += 1;
             $gameTime += $game->seconds;
-            if($game->result_id == 1) $winCount += 1;
+            if($game->result_id == 1){
+                $winCount += 1;
+            }else if($game->result_id == 2){
+                $loseCount += 1;
+            }
+
             // $gameAttacks += $this->calculateAttacks($game);
             // ここでrate系の計算の分は繰り返し処理しておく
             foreach($game->attacks as $attack){
@@ -338,7 +344,7 @@ class UserController extends Controller
                     }else{
                         $circle_graph_rate[$attack->skill->name] = 1;
                     }
-                    
+
                     if($attack->valid){
                         Log::debug("valid");
                         $validAttackCount += 1;
@@ -368,6 +374,7 @@ class UserController extends Controller
 
         return array(
             "winGameCount" => $winCount,
+            "loseGameCount" => $loseCount,
             "totalGameCount" => $total,
             "validAttackCount" => $validAttackCount,
             "attackCount" => $attackCount,
