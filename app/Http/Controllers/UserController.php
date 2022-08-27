@@ -378,7 +378,7 @@ class UserController extends Controller
             "totalGameCount" => $total,
             "validAttackCount" => $validAttackCount,
             "attackCount" => $attackCount,
-            "totalGameTime" => $gameTime / 60,
+            "totalGameTime" => round($gameTime / 60, 2),
             "circleGraphRate" => $circle_graph_rate,
             "barGraphRate" => $bar_graph_rate,
             "competitorCircleGraphRate" => $competitor_circle_graph_rate,

@@ -11,7 +11,6 @@ class SkillController extends Controller
     //
 
     public function create(Request $request){
-
         $skill = new Skill();
         $skill->name = $request->name;
         if($request->part_name) $skill->part_name = $request->part_name;
