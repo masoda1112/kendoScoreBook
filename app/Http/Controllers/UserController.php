@@ -55,6 +55,7 @@ class UserController extends Controller
     public function register(Request $request)
     {
         /** @var Illuminate\Validation\Validator $validator */
+        error_log("0");
 
         $validator = Validator::make($request->all(), [
             'name' => 'required',
