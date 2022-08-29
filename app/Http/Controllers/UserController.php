@@ -214,7 +214,7 @@ class UserController extends Controller
         $game->attacks()->createMany($totalAttacksArray);
         $game->fouls()->createMany($totalFoulArray);
         
-        response()->json($game ,Response::HTTP_OK);
+        return response()->json($game ,Response::HTTP_OK);
     }
 
     private function getAttackList($game, $valid){

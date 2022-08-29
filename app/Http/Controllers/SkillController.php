@@ -68,7 +68,7 @@ class SkillController extends Controller
         ]);
     }
 
-    
+
 
     public function index(){
         $skills = Skill::all();
@@ -76,7 +76,7 @@ class SkillController extends Controller
         foreach($skills as $skill){
             array_push($skillList, array("id" => $skill->id, "name" => $skill->name));
         }
-        return $skillList;
+        return response()->json($skillList, Response::HTTP_OK);
     }
 
     public function show($skillId){
