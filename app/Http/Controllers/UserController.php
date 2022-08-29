@@ -62,13 +62,15 @@ class UserController extends Controller
             'password' => 'required'
         ]);
 
+        error_log("1");
+
         if ($validator->fails()) {
             return response()->json($validator->messages(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+        error_log("2");
 
         $user = $this->create($request);
-
-
+        error_log("3");
         $json = [
             'access_token' => $user->access_token,
             'user_name' => $user->name,
