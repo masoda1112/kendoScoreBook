@@ -366,11 +366,26 @@ class UserController extends Controller
                             $bar_graph_rate[$attack->skill->name] = ["無効打" => 1, "有効打" => 0];
                         }
                     }
-
                 }
-
             }
         }
+
+
+        // array_multisort($circle_graph_rate, SORT_DESC);
+
+
+        // $circle_graph_other = array_slice($circle_graph_rate, 10, count($circle_graph_rate));
+        // $other = array_sum($circle_graph_other);
+
+        // $circle_graph_rate = array_slice($circle_graph_rate, 0, 9);
+        // $circle_graph_rate["その他"] = $other;
+        $circle_graph_rate = $this->otherBuild($circle_graph_rate);
+        Log::debug("circle",$circle_graph_rate);
+
+        // array_multisort($competitor_circle_graph_rate, SORT_DESC);
+        // $competitor_circle_graph_rate = array_slice($competitor_circle_graph_rate, 0, 6);
+        $comeptitor_circle_graph_rate = $this->otherBuild($competitor_circle_graph_rate);
+        Log::debug("competitor",$competitor_circle_graph_rate);
 
         return array(
             "winGameCount" => $winCount,
@@ -383,6 +398,19 @@ class UserController extends Controller
             "barGraphRate" => $bar_graph_rate,
             "competitorCircleGraphRate" => $competitor_circle_graph_rate,
         );
+    }
+
+    private function otherBuild($array){
+
+        array_multisort($array, SORT_DESC);
+
+        $array_other = array_slice($array, 10, count($array));
+        $other = array_sum($array_other);
+
+        $array = array_slice($array, 0, 9);
+        $array["その他"] = $other;
+        
+        return $array;
     }
 
     // private function calculateAttacks(Game $game){
