@@ -70,7 +70,7 @@ class SkillController extends Controller
 
 
 
-    public function index(){
+    public function skill_index(){
         $skills = Skill::all();
         $skillList = ["id" => 0, "name" => "選択してください"];
         foreach($skills as $skill){

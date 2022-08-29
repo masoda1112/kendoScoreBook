@@ -20,7 +20,7 @@ Route::get('/', function () {
 
 Route::group(["middleware" => ["auth:api"]], function () {
     Route::get("/{userName}", [UserController::class, "index"]);
-    Route::get("/skills", [SkillController::class, "index"]);
+    Route::get("/skills", [SkillController::class, "skill_index"]);
     Route::get("/{userName}/games", [UserController::class, "getGameIndex"]);
     Route::get("/{userName}/{gameId}", [UserController::class, "getGame"]);
     Route::post("/{userName}/add", [UserController::class, "addGame"]);
