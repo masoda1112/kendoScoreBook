@@ -74,7 +74,7 @@ class SkillController extends Controller
 
     public function skill_index(){
         $skills = Skill::all();
-        $skillList = ["id" => 0, "name" => "選択してください"];
+        $skillList = [["id" => 0, "name" => "選択してください"]];
         foreach($skills as $skill){
             array_push($skillList, array("id" => $skill->id, "name" => $skill->name));
         }
