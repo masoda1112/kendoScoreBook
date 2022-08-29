@@ -270,16 +270,20 @@ class UserController extends Controller
 
     private function create(Request $request){
         // ここでfirebaseに問い合わせる
+        error_log("create1");
         $uid = $this->confirmUid();
+        error_log("create2");
         $user = User::create([
             'name' =>  $request->name,
             'email' => $request->email,
             'password' => $request->password,
             'firebase_uid' => $uid
         ]);
-
+        error_log("create3");
         $tokenResult = $user->createToken('Personal Access Token');
+        error_log("create4");
         $user->access_token = $tokenResult->accessToken;
+        error_log("create5");
         $user->save();
         
         return $user;
