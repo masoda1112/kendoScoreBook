@@ -331,7 +331,6 @@ class UserController extends Controller
             // ここでrate系の計算の分は繰り返し処理しておく
             foreach($game->attacks as $attack){
                 if($attack->competitor){
-                    Log::debug("competitor");
                     if(array_key_exists($attack->skill->name, $competitor_circle_graph_rate)){
                         $competitor_circle_graph_rate[$attack->skill->name] += 1;
                     }else{
@@ -346,7 +345,6 @@ class UserController extends Controller
                     }
 
                     if($attack->valid){
-                        Log::debug("valid");
                         $validAttackCount += 1;
                         if(array_key_exists($attack->skill->name, $bar_graph_rate)){
                             $bar_graph_rate[$attack->skill->name] = [
@@ -380,12 +378,11 @@ class UserController extends Controller
         // $circle_graph_rate = array_slice($circle_graph_rate, 0, 9);
         // $circle_graph_rate["その他"] = $other;
         $circle_graph_rate = $this->otherBuild($circle_graph_rate);
-        Log::debug("circle",$circle_graph_rate);
 
         // array_multisort($competitor_circle_graph_rate, SORT_DESC);
         // $competitor_circle_graph_rate = array_slice($competitor_circle_graph_rate, 0, 6);
         $comeptitor_circle_graph_rate = $this->otherBuild($competitor_circle_graph_rate);
-        Log::debug("competitor",$competitor_circle_graph_rate);
+        array_multisort($bar_graph_rate, SORT_DESC);
 
         return array(
             "winGameCount" => $winCount,
