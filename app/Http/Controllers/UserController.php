@@ -123,6 +123,7 @@ class UserController extends Controller
         // getAttackList使うのが良さげ
         $valid_attack_list = [];
         $competitor_valid_attack_list = [];
+        $competitor_attack_list = [];
         $attack_list = [];
         $foul_list = [];
         $competitor_foul_list = [];
@@ -146,6 +147,24 @@ class UserController extends Controller
                     if($attack->competitor){
                         if($attack->valid){
                             array_push($competitor_valid_attack_list, $attack->skill->part_name);
+                            if(array_key_exists($attack->skill->name, $competitor_attack_list)){
+                                $competitor_attack_list[$attack->skill->name] = [
+                                    "無効打"=> $competitor_attack_list[$attack->skill->name]["無効打"], 
+                                    "有効打" => $competitor_attack_list[$attack->skill->name]["有効打"] + 1
+                                ];
+                            }else{
+                                $competitor_attack_list[$attack->skill->name] = ["無効打" => 0, "有効打" => 1];
+                            }
+                        }else{
+                            // 有効打と無効打に分ける
+                            if(array_key_exists($attack->skill->name, $competitor_attack_list)){
+                                $competitor_attack_list[$attack->skill->name] = [
+                                    "無効打"=> $competitor_attack_list[$attack->skill->name]["無効打"] + 1 ,
+                                    "有効打" => $competitor_attack_list[$attack->skill->name]["有効打"]
+                                ];
+                            }else{
+                                $competitor_attack_list[$attack->skill->name] = ["無効打" => 1, "有効打" => 0];
+                            }
                         }
                     }else{
                         if($attack->valid){
@@ -180,6 +199,7 @@ class UserController extends Controller
             "valid_attack_list" => $valid_attack_list,
             "competitor_valid_attack_list" => $competitor_valid_attack_list,
             "attack_list" => $attack_list,
+            "competitor_attack_list" => $competitor_attack_list,
             "foul_list" => $foul_list,
             "competitor_foul_list" => $competitor_foul_list,
             "time" => $time
@@ -201,9 +221,10 @@ class UserController extends Controller
         
         // attack配列作成
         $validAttacks = $this->createAttackLoop($request->valid_attacks, false, true);
-        $competitorAttacks = $this->createAttackLoop($request->competitor_attacks, true, true);
+        $competitorValidAttacks = $this->createAttackLoop($request->competitor_valid_attacks, true, true);
+        $competitorAttacks = $this->createAttackLoop($request->competitor_attacks, true, false);
         $attacks = $this->createAttackLoop($request->attacks, false, false);
-        $totalAttacksArray = array_merge($validAttacks , $competitorAttacks, $attacks);
+        $totalAttacksArray = array_merge($validAttacks, $competitorValidAttacks, $competitorAttacks, $attacks);
 
         // foul配列作成
         $fouls = $this->createFoulLoop($request->fouls, false);
