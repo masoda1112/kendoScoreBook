@@ -55,23 +55,17 @@ class UserController extends Controller
     public function register(Request $request)
     {
         /** @var Illuminate\Validation\Validator $validator */
-        error_log("0");
-
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required'
         ]);
 
-        error_log("1");
-
         if ($validator->fails()) {
             return response()->json($validator->messages(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        error_log("2");
 
         $user = $this->create($request);
-        error_log("3");
         $json = [
             'access_token' => $user->access_token,
             'user_name' => $user->name,
@@ -204,9 +198,6 @@ class UserController extends Controller
             "competitor_foul_list" => $competitor_foul_list,
             "time" => $time
         ];
-
-        error_log($response_data);
-
 
         return response()->json($response_data, Response::HTTP_OK);
     }
