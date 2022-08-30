@@ -348,10 +348,12 @@ class UserController extends Controller
             // ここでrate系の計算の分は繰り返し処理しておく
             foreach($game->attacks as $attack){
                 if($attack->competitor){
-                    if(array_key_exists($attack->skill->name, $competitor_circle_graph_rate)){
-                        $competitor_circle_graph_rate[$attack->skill->name] += 1;
-                    }else{
-                        $competitor_circle_graph_rate[$attack->skill->name] = 1;
+                    if($attack->valid){
+                        if(array_key_exists($attack->skill->name, $competitor_circle_graph_rate)){
+                            $competitor_circle_graph_rate[$attack->skill->name] += 1;
+                        }else{
+                            $competitor_circle_graph_rate[$attack->skill->name] = 1;
+                        }
                     }
                 }else{
                     $attackCount += 1;
