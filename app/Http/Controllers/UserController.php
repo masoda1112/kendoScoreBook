@@ -149,17 +149,18 @@ class UserController extends Controller
                             }else{
                                 $competitor_attack_list[$attack->skill->name] = ["無効打" => 0, "有効打" => 1];
                             }
-                        }else{
-                            // 有効打と無効打に分ける
-                            if(array_key_exists($attack->skill->name, $competitor_attack_list)){
-                                $competitor_attack_list[$attack->skill->name] = [
-                                    "無効打"=> $competitor_attack_list[$attack->skill->name]["無効打"] + 1 ,
-                                    "有効打" => $competitor_attack_list[$attack->skill->name]["有効打"]
-                                ];
-                            }else{
-                                $competitor_attack_list[$attack->skill->name] = ["無効打" => 1, "有効打" => 0];
-                            }
                         }
+                        // else{
+                        //     // 有効打と無効打に分ける
+                        //     if(array_key_exists($attack->skill->name, $competitor_attack_list)){
+                        //         $competitor_attack_list[$attack->skill->name] = [
+                        //             "無効打"=> $competitor_attack_list[$attack->skill->name]["無効打"] + 1 ,
+                        //             "有効打" => $competitor_attack_list[$attack->skill->name]["有効打"]
+                        //         ];
+                        //     }else{
+                        //         $competitor_attack_list[$attack->skill->name] = ["無効打" => 1, "有効打" => 0];
+                        //     }
+                        // }
                     }else{
                         if($attack->valid){
                             array_push($valid_attack_list, $attack->skill->part_name);
@@ -216,7 +217,6 @@ class UserController extends Controller
         // attack配列作成
         (!$request->valid_attacks) ? $validAttacks = $this->createAttackLoop($request->valid_attacks, false, true, false) : $validAttacks = [];
         (!$request->competitor_valid_attacks) ? $competitorValidAttacks = $this->createAttackLoop($request->competitor_valid_attacks, true, true, false) : $competitorValidAttacks = [];
-        (!$request->competitor_attacks) ? $competitorAttacks = $this->createAttackLoop($request->competitor_attacks, true, false, false) : $competitorAttacks = [];
         (!$request->attacks) ? $attacks = $this->createAttackLoop($request->attacks, false, false, false) : $attacks = [];
         (!$request->defeat_attacks) ? $defeatAttacks = $this->createAttackLoop($request->defeat_attacks, false, false, true) : $defeatAttacks = [];
         $totalAttacksArray = array_merge($validAttacks, $competitorValidAttacks, $competitorAttacks, $attacks, $defeatAttacks);
