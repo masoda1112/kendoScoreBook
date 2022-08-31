@@ -32,6 +32,7 @@ class SkillController extends Controller
             ["name" => "突き応じ系面", "part_name" => "面", "opportunity_name" => "応じ技"],
             ["name" => "引き面", "part_name" => "面", "opportunity_name" => "鍔迫り合い"],
             ["name" => "近間面", "part_name" => "面", "opportunity_name" => "近間"],
+            ["name" => "後打ちの面", "part_name" => "面", "opportunity_name" => "後打ち"],
             ["name" => "避けさせて小手", "part_name" => "小手", "opportunity_name" => "避けたところ"],
             ["name" => "出鼻小手", "part_name" => "小手", "opportunity_name" => "出鼻"],
             ["name" => "面応じ系小手", "part_name" => "小手", "opportunity_name" => "応じ技"],
