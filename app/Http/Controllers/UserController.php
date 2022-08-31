@@ -219,7 +219,7 @@ class UserController extends Controller
         (!$request->competitor_valid_attacks) ? $competitorValidAttacks = $this->createAttackLoop($request->competitor_valid_attacks, true, true, false) : $competitorValidAttacks = [];
         (!$request->attacks) ? $attacks = $this->createAttackLoop($request->attacks, false, false, false) : $attacks = [];
         (!$request->defeat_attacks) ? $defeatAttacks = $this->createAttackLoop($request->defeat_attacks, false, false, true) : $defeatAttacks = [];
-        $totalAttacksArray = array_merge($validAttacks, $competitorValidAttacks, $competitorAttacks, $attacks, $defeatAttacks);
+        $totalAttacksArray = array_merge($validAttacks, $competitorValidAttacks, $attacks, $defeatAttacks);
 
         // foul配列作成
         $fouls = $this->createFoulLoop($request->fouls, false);
