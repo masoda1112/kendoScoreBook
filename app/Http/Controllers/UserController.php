@@ -294,8 +294,11 @@ class UserController extends Controller
             'password' => $request->password,
             'firebase_uid' => $uid
         ]);
+        error_log("1");
         $tokenResult = $user->createToken('Personal Access Token');
+        error_log("2");
         $user->access_token = $tokenResult->accessToken;
+        error_log("3");
         $user->save();
         
         return $user;
