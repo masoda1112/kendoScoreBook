@@ -294,11 +294,8 @@ class UserController extends Controller
             'password' => $request->password,
             'firebase_uid' => $uid
         ]);
-        error_log("1");
         $tokenResult = $user->createToken('Personal Access Token');
-        error_log("2");
         $user->access_token = $tokenResult->accessToken;
-        error_log("3");
         $user->save();
         
         return $user;
@@ -373,19 +370,31 @@ class UserController extends Controller
                         if(array_key_exists($attack->skill->name, $bar_graph_rate)){
                             $bar_graph_rate[$attack->skill->name] = [
                                 "無効打"=> $bar_graph_rate[$attack->skill->name]["無効打"], 
-                                "有効打" => $bar_graph_rate[$attack->skill->name]["有効打"] + 1
+                                "有効打" => $bar_graph_rate[$attack->skill->name]["有効打"] + 1,
+                                "敗因打"=> $bar_graph_rate[$attack->skill->name]["敗因打"], 
                             ];
                         }else{
-                            $bar_graph_rate[$attack->skill->name] = ["無効打" => 0, "有効打" => 1];
+                            $bar_graph_rate[$attack->skill->name] = ["無効打" => 0, "有効打" => 1, "敗因打" => 0];
+                        }
+                    }else if($attack->defeat){
+                        if(array_key_exists($attack->skill->name, $bar_graph_rate)){
+                            $bar_graph_rate[$attack->skill->name] = [
+                                "無効打"=> $bar_graph_rate[$attack->skill->name]["無効打"],
+                                "有効打" => $bar_graph_rate[$attack->skill->name]["有効打"],
+                                "敗因打"=> $bar_graph_rate[$attack->skill->name]["敗因打"] + 1, 
+                            ];
+                        }else{
+                            $bar_graph_rate[$attack->skill->name] = ["無効打" => 1, "有効打" => 0, "敗因打" => 1];
                         }
                     }else{
                         if(array_key_exists($attack->skill->name, $bar_graph_rate)){
                             $bar_graph_rate[$attack->skill->name] = [
                                 "無効打"=> $bar_graph_rate[$attack->skill->name]["無効打"] + 1 ,
-                                "有効打" => $bar_graph_rate[$attack->skill->name]["有効打"]
+                                "有効打" => $bar_graph_rate[$attack->skill->name]["有効打"],
+                                "敗因打"=> $bar_graph_rate[$attack->skill->name]["敗因打"], 
                             ];
                         }else{
-                            $bar_graph_rate[$attack->skill->name] = ["無効打" => 1, "有効打" => 0];
+                            $bar_graph_rate[$attack->skill->name] = ["無効打" => 1, "有効打" => 0, "敗因打" => 0];
                         }
                     }
                 }
