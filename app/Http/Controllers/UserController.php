@@ -252,17 +252,18 @@ class UserController extends Controller
 
     private function createAttackLoop($array, $competitor, $valid, $defeat){
         $attacks = [];
-        foreach($array as $attack){
-            // Attempt to read property "skill_id" on intだとさ
-            if($attack != null){
-                $attack_array = array(
-                    "skill_id" => $attack,
-                    "competitor" => $competitor,
-                    "valid" => $valid,
-                    "defeat" => $defeat
-                );
-
-                array_push($attacks, $attack_array);
+        if(!$array){
+            foreach($array as $attack){
+                // Attempt to read property "skill_id" on intだとさ
+                if($attack != null){
+                    $attack_array = array(
+                        "skill_id" => $attack,
+                        "competitor" => $competitor,
+                        "valid" => $valid,
+                        "defeat" => $defeat
+                    );
+                    array_push($attacks, $attack_array);
+                }
             }
         }
         return $attacks;
