@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('opportunity_name')->nullable();
             $table->string('part_name')->nullable();
             $table->boolean('competitor');
+            $table->boolean('defeat');
             $table->boolean('valid');
         });
     }

@@ -214,11 +214,12 @@ class UserController extends Controller
         ]);
         
         // attack配列作成
-        $validAttacks = $this->createAttackLoop($request->valid_attacks, false, true);
-        $competitorValidAttacks = $this->createAttackLoop($request->competitor_valid_attacks, true, true);
-        $competitorAttacks = $this->createAttackLoop($request->competitor_attacks, true, false);
-        $attacks = $this->createAttackLoop($request->attacks, false, false);
-        $totalAttacksArray = array_merge($validAttacks, $competitorValidAttacks, $competitorAttacks, $attacks);
+        $validAttacks = $this->createAttackLoop($request->valid_attacks, false, true, false);
+        $competitorValidAttacks = $this->createAttackLoop($request->competitor_valid_attacks, true, true, false);
+        $competitorAttacks = $this->createAttackLoop($request->competitor_attacks, true, false, false);
+        $attacks = $this->createAttackLoop($request->attacks, false, false, false);
+        $defeatAttacks = $this->createAttackLoop($request->defeat_attacks, false, false, true);
+        $totalAttacksArray = array_merge($validAttacks, $competitorValidAttacks, $competitorAttacks, $attacks, $defeatAttacks);
 
         // foul配列作成
         $fouls = $this->createFoulLoop($request->fouls, false);
@@ -249,7 +250,7 @@ class UserController extends Controller
         return array("competitor" => $competitorAttacks, "self" => $selfAttacks);
     }
 
-    private function createAttackLoop($array, $competitor, $valid){
+    private function createAttackLoop($array, $competitor, $valid, $defeat){
         $attacks = [];
         foreach($array as $attack){
             // Attempt to read property "skill_id" on intだとさ
@@ -258,6 +259,7 @@ class UserController extends Controller
                     "skill_id" => $attack,
                     "competitor" => $competitor,
                     "valid" => $valid,
+                    "defeat" => $defeat
                 );
 
                 array_push($attacks, $attack_array);
