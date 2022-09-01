@@ -215,10 +215,10 @@ class UserController extends Controller
         ]);
         
         // attack配列作成
-        (!$request->valid_attacks) ? $validAttacks = $this->createAttackLoop($request->valid_attacks, false, true, false) : $validAttacks = [];
-        (!$request->competitor_valid_attacks) ? $competitorValidAttacks = $this->createAttackLoop($request->competitor_valid_attacks, true, true, false) : $competitorValidAttacks = [];
-        (!$request->attacks) ? $attacks = $this->createAttackLoop($request->attacks, false, false, false) : $attacks = [];
-        (!$request->defeat_attacks) ? $defeatAttacks = $this->createAttackLoop($request->defeat_attacks, false, false, true) : $defeatAttacks = [];
+        ($request->valid_attacks) ? $validAttacks = $this->createAttackLoop($request->valid_attacks, false, true, false) : $validAttacks = [];
+        ($request->competitor_valid_attacks) ? $competitorValidAttacks = $this->createAttackLoop($request->competitor_valid_attacks, true, true, false) : $competitorValidAttacks = [];
+        ($request->attacks) ? $attacks = $this->createAttackLoop($request->attacks, false, false, false) : $attacks = [];
+        ($request->defeat_attacks) ? $defeatAttacks = $this->createAttackLoop($request->defeat_attacks, false, false, true) : $defeatAttacks = [];
         $totalAttacksArray = array_merge($validAttacks, $competitorValidAttacks, $attacks, $defeatAttacks);
 
         // foul配列作成
@@ -415,7 +415,7 @@ class UserController extends Controller
 
         // array_multisort($competitor_circle_graph_rate, SORT_DESC);
         // $competitor_circle_graph_rate = array_slice($competitor_circle_graph_rate, 0, 6);
-        $comeptitor_circle_graph_rate = $this->otherBuild($competitor_circle_graph_rate);
+        $competitor_circle_graph_rate = $this->otherBuild($competitor_circle_graph_rate);
         array_multisort($bar_graph_rate, SORT_DESC);
 
         return array(
