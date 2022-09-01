@@ -19,6 +19,7 @@ class Attack extends Model
         'part_name',
         'competitor',
         'valid',
+        'defeat',
     ];
 
     public function skill()
