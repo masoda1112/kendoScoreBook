@@ -346,9 +346,9 @@ class UserController extends Controller
         $response_array = [];
         if($average){
             $response_array = array(
-                "winGameCount" => $winCount,
-                "loseGameCount" => $loseCount,
-                "totalGameCount" => $total,
+                // "winGameCount" => $winCount,
+                // "loseGameCount" => $loseCount,
+                // "totalGameCount" => $total,
                 "validAttackCount" => $validAttackCount,
                 "attackCount" => $attackCount,
                 "totalGameTime" => round($gameTime / 60, 2),
