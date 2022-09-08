@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->string('part_name')->nullable();
             $table->string('opportunity_name')->nullable();
+            $table->string('description')->nullable();
         });
     }
 

@@ -13,6 +13,7 @@ class Skill extends Model
         'name',
         'part_name',
         'opportunity_name',
+        'description'
     ];
     
 }
