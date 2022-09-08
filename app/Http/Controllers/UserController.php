@@ -163,7 +163,7 @@ class UserController extends Controller
             }
         }
 
-        array_multisort($attack_list, SORT_DESC);
+        // array_multisort($attack_list, SORT_DESC);
 
         $response_data = [
             "date" => date('Y/m/d', strtotime($game->updated_at)),
