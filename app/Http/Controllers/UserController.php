@@ -148,62 +148,15 @@ class UserController extends Controller
                         if($attack->valid){
                             array_push($competitor_valid_attack_list, $attack->skill->part_name);
                             $competitor_attack_list[$attack->skill->name] = $this->addBarGraphRate($attack->skill->name, $competitor_attack_list, true, false);
-                            // if(array_key_exists($attack->skill->name, $competitor_attack_list)){
-                            //     $competitor_attack_list[$attack->skill->name] = [
-                            //         "無効打"=> $competitor_attack_list[$attack->skill->name]["無効打"], 
-                            //         "有効打" => $competitor_attack_list[$attack->skill->name]["有効打"] + 1
-                            //     ];
-                            // }else{
-                            //     $competitor_attack_list[$attack->skill->name] = ["無効打" => 0, "有効打" => 1];
-                            // }
                         }
-                        // else{
-                        //     // 有効打と無効打に分ける
-                        //     if(array_key_exists($attack->skill->name, $competitor_attack_list)){
-                        //         $competitor_attack_list[$attack->skill->name] = [
-                        //             "無効打"=> $competitor_attack_list[$attack->skill->name]["無効打"] + 1 ,
-                        //             "有効打" => $competitor_attack_list[$attack->skill->name]["有効打"]
-                        //         ];
-                        //     }else{
-                        //         $competitor_attack_list[$attack->skill->name] = ["無効打" => 1, "有効打" => 0];
-                        //     }
-                        // }
                     }else{
                         if($attack->valid){
                             array_push($valid_attack_list, $attack->skill->part_name);
                             $attack_list[$attack->skill->name] = $this->addBarGraphRate($attack->skill->name, $attack_list, true, false);
-                            // if(array_key_exists($attack->skill->name, $attack_list)){
-                                
-                            //     $attack_list[$attack->skill->name] = [
-                            //         "無効打"=> $attack_list[$attack->skill->name]["無効打"], 
-                            //         "有効打" => $attack_list[$attack->skill->name]["有効打"] + 1,
-                            //         "被有効打" => $attack_list[$attack->skill->name]["被有効打"] + 0
-                            //     ];
-                            // }else{ 
-                            //     $attack_list[$attack->skill->name] = ["無効打" => 0, "有効打" => 1, "被有効打" => 0];
-                            // }
                         }else if($attack->defeat){
                             $attack_list[$attack->skill->name] = $this->addBarGraphRate($attack->skill->name, $attack_list, false, true);
-                            // if(array_key_exists($attack->skill->name, $attack_list)){
-                            //     $attack_list[$attack->skill->name] = [
-                            //         "無効打"=> $attack_list[$attack->skill->name]["無効打"],
-                            //         "有効打" => $attack_list[$attack->skill->name]["有効打"],
-                            //         "被有効打"=> $attack_list[$attack->skill->name]["被有効打"] + 1 ,
-                            //     ];
-                            // }else{
-                            //     $attack_list[$attack->skill->name] = ["無効打" => 0, "有効打" => 0, "被有効打" => 1];
-                            // }
                         }else{
                             $attack_list[$attack->skill->name] = $this->addBarGraphRate($attack->skill->name, $attack_list, false, false);
-                            // if(array_key_exists($attack->skill->name, $attack_list)){
-                            //     $attack_list[$attack->skill->name] = [
-                            //         "無効打"=> $attack_list[$attack->skill->name]["無効打"] + 1 ,
-                            //         "有効打" => $attack_list[$attack->skill->name]["有効打"],
-                            //         "被有効打" => $attack_list[$attack->skill->name]["被有効打"],
-                            //     ];
-                            // }else{
-                            //     $attack_list[$attack->skill->name] = ["無効打" => 1, "有効打" => 0, "被有効打" => 0];
-                            // }
                         }
                     }
                 }
@@ -229,7 +182,6 @@ class UserController extends Controller
     }
 
     public function addGame(Request $request){
-        // requestの形{competitor=>"", resultId=>"", time=> "", attacks => [{skill_id => ""}, {},{}] }
         $user = $request->user();
 
         // ここに問題あり
