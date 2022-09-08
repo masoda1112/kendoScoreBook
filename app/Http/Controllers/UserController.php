@@ -82,7 +82,13 @@ class UserController extends Controller
 
     public function index(Request $request){
         $user = $request->user();
-        $response = $this->buildResponseData($user);
+        $response = $this->buildResponseData($user->games, false);
+        return response()->json($response, Response::HTTP_OK);
+    }
+
+    public function averageData(Request $request){
+        $all_games = Game::all();
+        $response = $this->buildResponseData($all_games, true);
         return response()->json($response, Response::HTTP_OK);
     }
 
@@ -335,7 +341,7 @@ class UserController extends Controller
         return $uid;
     }
 
-    private function buildResponseData($user){
+    private function buildResponseData($games, $average){
         // 完結：winRate,validAttackRate,attackCount
         // 補助：caluculateSkillRate,calculateValidSkillRate
         $winCount = 0;
@@ -348,7 +354,7 @@ class UserController extends Controller
         $bar_graph_rate = [];
         $competitor_circle_graph_rate = [];
 
-        foreach ($user->games as $game) {
+        foreach ($games as $game) {
             $total += 1;
             $gameTime += $game->seconds;
             if($game->result_id == 1){
@@ -362,83 +368,131 @@ class UserController extends Controller
             foreach($game->attacks as $attack){
                 if($attack->competitor){
                     if($attack->valid){
-                        if(array_key_exists($attack->skill->name, $competitor_circle_graph_rate)){
-                            $competitor_circle_graph_rate[$attack->skill->name] += 1;
-                        }else{
-                            $competitor_circle_graph_rate[$attack->skill->name] = 1;
-                        }
+                        // if(array_key_exists($attack->skill->name, $competitor_circle_graph_rate)){
+                        //     $competitor_circle_graph_rate[$attack->skill->name] += 1;
+                        // }else{
+                        //     $competitor_circle_graph_rate[$attack->skill->name] = 1;
+                        // }
+                        if(!$average)$competitor_circle_graph_rate[$attack->skill->name] = $this->addCircleGraphRate($attack->skill->name, $competitor_circle_graph_rate);
                     }
                 }else{
                     $attackCount += 1;
-                    if(array_key_exists($attack->skill->name, $circle_graph_rate)){
-                        $circle_graph_rate[$attack->skill->name] += 1;
-                    }else{
-                        $circle_graph_rate[$attack->skill->name] = 1;
-                    }
+                    if(!$average)$circle_graph_rate[$attack->skill->name] = $this->addCircleGraphRate($attack->skill->name, $circle_graph_rate);
+                    // if(array_key_exists($attack->skill->name, $circle_graph_rate)){
+                    //     $circle_graph_rate[$attack->skill->name] += 1;
+                    // }else{
+                    //     $circle_graph_rate[$attack->skill->name] = 1;
+                    // }
 
+                    // barGraphRate
                     if($attack->valid){
                         $validAttackCount += 1;
-                        if(array_key_exists($attack->skill->name, $bar_graph_rate)){
-                            $bar_graph_rate[$attack->skill->name] = [
-                                "無効打"=> $bar_graph_rate[$attack->skill->name]["無効打"], 
-                                "有効打" => $bar_graph_rate[$attack->skill->name]["有効打"] + 1,
-                                "被有効打"=> $bar_graph_rate[$attack->skill->name]["被有効打"], 
-                            ];
-                        }else{
-                            $bar_graph_rate[$attack->skill->name] = ["無効打" => 0, "有効打" => 1, "被有効打" => 0];
-                        }
+                        if(!$average)$bar_graph_rate[$attack->skill->name] = $this->addBarGraphRate($attack->skill->name, $bar_graph_rate, true, false);
+                        // if(array_key_exists($attack->skill->name, $bar_graph_rate)){
+                        //     $bar_graph_rate[$attack->skill->name] = [
+                        //         "無効打"=> $bar_graph_rate[$attack->skill->name]["無効打"], 
+                        //         "有効打" => $bar_graph_rate[$attack->skill->name]["有効打"] + 1,
+                        //         "被有効打"=> $bar_graph_rate[$attack->skill->name]["被有効打"], 
+                        //     ];
+                        // }else{
+                        //     $bar_graph_rate[$attack->skill->name] = ["無効打" => 0, "有効打" => 1, "被有効打" => 0];
+                        // }
                     }else if($attack->defeat){
-                        if(array_key_exists($attack->skill->name, $bar_graph_rate)){
-                            $bar_graph_rate[$attack->skill->name] = [
-                                "無効打"=> $bar_graph_rate[$attack->skill->name]["無効打"],
-                                "有効打" => $bar_graph_rate[$attack->skill->name]["有効打"],
-                                "被有効打"=> $bar_graph_rate[$attack->skill->name]["被有効打"] + 1, 
-                            ];
-                        }else{
-                            $bar_graph_rate[$attack->skill->name] = ["無効打" => 1, "有効打" => 0, "被有効打" => 1];
-                        }
+                        if(!$average)$bar_graph_rate[$attack->skill->name] = $this->addBarGraphRate($attack->skill->name, $bar_graph_rate, false, true);
+                        // if(array_key_exists($attack->skill->name, $bar_graph_rate)){
+                        //     $bar_graph_rate[$attack->skill->name] = [
+                        //         "無効打"=> $bar_graph_rate[$attack->skill->name]["無効打"],
+                        //         "有効打" => $bar_graph_rate[$attack->skill->name]["有効打"],
+                        //         "被有効打"=> $bar_graph_rate[$attack->skill->name]["被有効打"] + 1, 
+                        //     ];
+                        // }else{
+                        //     $bar_graph_rate[$attack->skill->name] = ["無効打" => 1, "有効打" => 0, "被有効打" => 1];
+                        // }
                     }else{
-                        if(array_key_exists($attack->skill->name, $bar_graph_rate)){
-                            $bar_graph_rate[$attack->skill->name] = [
-                                "無効打"=> $bar_graph_rate[$attack->skill->name]["無効打"] + 1 ,
-                                "有効打" => $bar_graph_rate[$attack->skill->name]["有効打"],
-                                "被有効打"=> $bar_graph_rate[$attack->skill->name]["被有効打"], 
-                            ];
-                        }else{
-                            $bar_graph_rate[$attack->skill->name] = ["無効打" => 1, "有効打" => 0, "被有効打" => 0];
-                        }
+                        if(!$average)$bar_graph_rate[$attack->skill->name] = $this->addBarGraphRate($attack->skill->name, $bar_graph_rate, false, false);
+                        // if(array_key_exists($attack->skill->name, $bar_graph_rate)){
+                        //     $bar_graph_rate[$attack->skill->name] = [
+                        //         "無効打"=> $bar_graph_rate[$attack->skill->name]["無効打"] + 1 ,
+                        //         "有効打" => $bar_graph_rate[$attack->skill->name]["有効打"],
+                        //         "被有効打"=> $bar_graph_rate[$attack->skill->name]["被有効打"], 
+                        //     ];
+                        // }else{
+                        //     $bar_graph_rate[$attack->skill->name] = ["無効打" => 1, "有効打" => 0, "被有効打" => 0];
+                        // }
                     }
                 }
             }
         }
 
-
-        // array_multisort($circle_graph_rate, SORT_DESC);
-
-
-        // $circle_graph_other = array_slice($circle_graph_rate, 10, count($circle_graph_rate));
-        // $other = array_sum($circle_graph_other);
-
-        // $circle_graph_rate = array_slice($circle_graph_rate, 0, 9);
-        // $circle_graph_rate["その他"] = $other;
         $circle_graph_rate = $this->otherBuild($circle_graph_rate);
-
-        // array_multisort($competitor_circle_graph_rate, SORT_DESC);
-        // $competitor_circle_graph_rate = array_slice($competitor_circle_graph_rate, 0, 6);
         $competitor_circle_graph_rate = $this->otherBuild($competitor_circle_graph_rate);
         array_multisort($bar_graph_rate, SORT_DESC);
 
-        return array(
-            "winGameCount" => $winCount,
-            "loseGameCount" => $loseCount,
-            "totalGameCount" => $total,
-            "validAttackCount" => $validAttackCount,
-            "attackCount" => $attackCount,
-            "totalGameTime" => round($gameTime / 60, 2),
-            "circleGraphRate" => $circle_graph_rate,
-            "barGraphRate" => $bar_graph_rate,
-            "competitorCircleGraphRate" => $competitor_circle_graph_rate,
-        );
+        $response_array = [];
+        if($average){
+            $response_array = array(
+                "winGameCount" => $winCount,
+                "loseGameCount" => $loseCount,
+                "totalGameCount" => $total,
+                "validAttackCount" => $validAttackCount,
+                "attackCount" => $attackCount,
+                "totalGameTime" => round($gameTime / 60, 2),
+            );
+        }else{
+            $response_array = array(
+                "winGameCount" => $winCount,
+                "loseGameCount" => $loseCount,
+                "totalGameCount" => $total,
+                "validAttackCount" => $validAttackCount,
+                "attackCount" => $attackCount,
+                "totalGameTime" => round($gameTime / 60, 2),
+                "circleGraphRate" => $circle_graph_rate,
+                "barGraphRate" => $bar_graph_rate,
+                "competitorCircleGraphRate" => $competitor_circle_graph_rate,
+            );
+        }
+
+        return $response_array;
+    }
+
+    private function addCircleGraphRate ($skill_name, $array){
+        if(array_key_exists($skill_name, $array)){
+            return $array[$attack->skill->name] += 1;
+        }else{
+            return 1;
+        }
+    }
+
+    private function addBarGraphRate($skill_name, $array, $valid, $defeat){
+        if(array_key_exists($skill_name, $array)){
+            if($valid){
+                return [
+                    "無効打"=> $array[$skill_name]["無効打"], 
+                    "有効打" => $array[$skill_name]["有効打"] + 1,
+                    "被有効打"=> $array[$skill_name]["被有効打"], 
+                ];
+            }else if($defeat){
+                return [
+                    "無効打"=> $array[$skill_name]["無効打"], 
+                    "有効打" => $array[$skill_name]["有効打"],
+                    "被有効打"=> $array[$skill_name]["被有効打"] + 1, 
+                ];
+            }else{
+                return [
+                    "無効打"=> $array[$skill_name]["無効打"] + 1, 
+                    "有効打" => $array[$skill_name]["有効打"],
+                    "被有効打"=> $array[$skill_name]["被有効打"], 
+                ];
+            }
+        }else{
+            if($valid){
+                return ["無効打" => 0, "有効打" => 1, "被有効打" => 0];
+            }else if($defeat){
+                return ["無効打" => 0, "有効打" => 0, "被有効打" => 1];
+            }else{
+                return ["無効打" => 1, "有効打" => 0, "被有効打" => 0];
+            }
+        }
     }
 
     private function otherBuild($array){
@@ -453,39 +507,5 @@ class UserController extends Controller
         
         return $array;
     }
-
-    // private function calculateAttacks(Game $game){
-    //     $attackCount = 0;
-    //     $validAttackCount = 0;
-    //     $skillRate = [];
-    //     $validSkillRate = [];
-
-    //     foreach($game->attacks() as $attack){
-    //         $attackCount += 1;
-    //         $skillName = $attack->skill()->name;
-
-    //         if(!($skillRate[$skillName])){
-    //             $skillRate += array($skillName => 1);
-    //         }else{
-    //             $skillRate[$skillName] += 1;
-    //         }
-    //         if($attack->valid){
-    //             $validAttackCount += 1;
-
-    //             if(!($validSkillRate[$skillName])){
-    //                 $validSkillRate += array($skillName => 1);
-    //             }else{
-    //                 $validSkillRate[$skillName] += 1;
-    //             }
-    //         }
-    //     }
-
-    //     return array(
-    //         "validAttackCount" => $validAttackCount,
-    //         "attackCount" => $attackCount,
-    //         "skillRate" => $skillRate,
-    //         "validSkillRate" => $validSkillRate,
-    //     );
-    // }
 
 }

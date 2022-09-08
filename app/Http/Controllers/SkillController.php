@@ -24,6 +24,7 @@ class SkillController extends Controller
     public function defaultCreate(){
         $skillArray = array(
             ["name" => "居着いたところ面", "part_name" => "面", "opportunity_name" => "居付き"],
+            ["name" => "打間に入るところ面", "part_name" => "面", "opportunity_name" => "入り際"],
             ["name" => "避けさせて面", "part_name" => "面", "opportunity_name" => "避けたところ"],
             ["name" => "二段技面", "part_name" => "面", "opportunity_name" => "二段技"],
             ["name" => "出鼻面", "part_name" => "面", "opportunity_name" => "出鼻"],
