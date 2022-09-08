@@ -123,6 +123,8 @@ class UserController extends Controller
         // getAttackList使うのが良さげ
         $valid_attack_list = [];
         $competitor_valid_attack_list = [];
+        $valid_attack_skill_name = [];
+        $competitor_valid_attack_skill_name = [];
         // $competitor_attack_list = [];
         // $attack_list = [];
         $foul_list = [];
@@ -147,11 +149,13 @@ class UserController extends Controller
                     if($attack->competitor){
                         if($attack->valid){
                             array_push($competitor_valid_attack_list, $attack->skill->part_name);
+                            array_push($competitor_valid_attack_skill_name, $attack->skill->name);
                             // $competitor_attack_list[$attack->skill->name] = $this->addBarGraphRate($attack->skill->name, $competitor_attack_list, true, false);
                         }
                     }else{
                         if($attack->valid){
                             array_push($valid_attack_list, $attack->skill->part_name);
+                            array_push($valid_attack_skill_name, $attack->skill->name);
                             // $attack_list[$attack->skill->name] = $this->addBarGraphRate($attack->skill->name, $attack_list, true, false);
                         }else if($attack->defeat){
                             // $attack_list[$attack->skill->name] = $this->addBarGraphRate($attack->skill->name, $attack_list, false, true);
@@ -171,8 +175,8 @@ class UserController extends Controller
             "competitor_name" => $competitor_name,
             "valid_attack_list" => $valid_attack_list,
             "competitor_valid_attack_list" => $competitor_valid_attack_list,
-            // "attack_list" => $attack_list,
-            // "competitor_attack_list" => $competitor_attack_list,
+            "valid_attack_skill_name" => $valid_attack_skill_name,
+            "competitor_valid_attack_skill_name" => $competitor_valid_attack_skill_name,
             "foul_list" => $foul_list,
             "competitor_foul_list" => $competitor_foul_list,
             // "time" => $time
