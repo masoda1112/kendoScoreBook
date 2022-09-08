@@ -135,7 +135,7 @@ class UserController extends Controller
             if($game->id == $game_id){
                 $competitor_name = $game->competitor_name;
                 $date = $game->updated_at;
-                $time = $game->seconds;
+                // $time = $game->seconds;
                 foreach($game->fouls as $foul){
                     if($foul->competitor){
                         $foul_list[] = $foul->name;
@@ -188,7 +188,7 @@ class UserController extends Controller
         $game = $user->games()->create([
             'competitor_name' =>  $request->competitor_name,
             'result_id' => $request->result_id,
-            'seconds' => $request->time,
+            'seconds' => 0,
         ]);
         
         // attack配列作成
