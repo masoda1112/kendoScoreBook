@@ -342,7 +342,7 @@ class UserController extends Controller
 
         $circle_graph_rate = $this->otherBuild($circle_graph_rate);
         $competitor_circle_graph_rate = $this->otherBuild($competitor_circle_graph_rate);
-        array_multisort($bar_graph_rate, SORT_DESC);
+        // array_multisort($bar_graph_rate, SORT_DESC);
 
         $response_array = [];
         // if($average){
