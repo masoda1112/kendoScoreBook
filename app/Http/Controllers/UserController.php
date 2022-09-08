@@ -457,7 +457,7 @@ class UserController extends Controller
 
     private function addCircleGraphRate ($skill_name, $array){
         if(array_key_exists($skill_name, $array)){
-            return $array[$attack->skill->name] += 1;
+            return $array[$skill_name] += 1;
         }else{
             return 1;
         }
