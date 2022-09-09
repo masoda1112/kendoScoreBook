@@ -324,9 +324,9 @@ class UserController extends Controller
             ];
         }else{
             $response_array = [
-                "winGameCount" => $data->winCount,
-                "loseGameCount" => $data->loseCount,
-                "totalGameCount" => $data->total,
+                "winGameCount" => $data["winCount"],
+                "loseGameCount" => $data["loseCount"],
+                "totalGameCount" => $data["total"],
                 "circleGraphRate" => $skill_array,
                 "competitorCircleGraphRate" => $competitor_skill_array,
                 "opportunityGraphRate" => $opportunity_array,
