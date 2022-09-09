@@ -86,7 +86,7 @@ class UserController extends Controller
         return response()->json($response, Response::HTTP_OK);
     }
 
-    public function averageData(Request $request){
+    public function allUserData(Request $request){
         $all_games = Game::all();
         $response = $this->buildResponseData($all_games, true);
         return response()->json($response, Response::HTTP_OK);
@@ -301,59 +301,92 @@ class UserController extends Controller
         return $uid;
     }
 
-    private function buildResponseData($games){
-        $winCount = 0;
-        $loseCount = 0;
-        $total = 0;
-        $circle_graph_rate = [];
-        $competitor_circle_graph_rate = [];
-        $opportunity_graph_rate = [];
-        $competitor_opportunity_graph_rate = [];
+    private function buildResponseData($games, $all_user){
+        $competitor_skill_array = [];
+        $competitor_opportunity_array = [];
+        $data = $this->gameLoop($games, $all_user);
 
-        foreach ($games as $game) {
-            $total += 1;
-            if($game->result_id == 1){
-                $winCount += 1;
-            }else if($game->result_id == 2){
-                $loseCount += 1;
-            }
+        $skill_array = $this->otherBuild($data->skill_array);
+        $opportunity_array = $this->otherBuild($data->$opportunity_array);
 
-            foreach($game->attacks as $attack){
-                if($attack->competitor){
-                    if($attack->valid){
-                        $competitor_circle_graph_rate[$attack->skill->name] = $this->addCircleGraphRate($attack->skill->name, $competitor_circle_graph_rate);
-                        $competitor_opportunity_graph_rate[$attack->skill->opportunity_name] = $this->addCircleGraphRate($attack->skill->opportunity_name, $competitor_opportunity_graph_rate);
-                    }
-                }else{
-                    // $circle_graph_rate[$attack->skill->name] = $this->addCircleGraphRate($attack->skill->name, $circle_graph_rate);
-                    if($attack->valid){
-                        $circle_graph_rate[$attack->skill->name] = $this->addCircleGraphRate($attack->skill->name, $circle_graph_rate);
-                        $opportunity_graph_rate[$attack->skill->opportunity_name] = $this->addCircleGraphRate($attack->skill->opportunity_name, $opportunity_graph_rate);
-
-                    }
-                }
-            }
+        if($all_user){
+            $competitor_skill_array = $this->otherBuild($data->$competitor_skill_array);
+            $competitor_opportunity_array = $this->otherBuild($data->$competitor_opportunity_array);
         }
 
-        $circle_graph_rate = $this->otherBuild($circle_graph_rate);
-        $competitor_circle_graph_rate = $this->otherBuild($competitor_circle_graph_rate);
-
         $response_array = [];
-        {
-            $response_array = array(
-                "winGameCount" => $winCount,
-                "loseGameCount" => $loseCount,
-                "totalGameCount" => $total,
-                "circleGraphRate" => $circle_graph_rate,
-                "competitorCircleGraphRate" => $competitor_circle_graph_rate,
-                "opportunityGraphRate" => $opportunity_graph_rate,
-                "competitorOpportunityGraphRate" => $competitor_opportunity_graph_rate,
-            );
+
+
+        if($all_user){
+            $response_array = [
+                "circleGraphRate" => $skill_array,
+                "opportunityGraphRate" => $opportunity_array,
+            ];
+        }else{
+            $response_array = [
+                "winGameCount" => $data->winCount,
+                "loseGameCount" => $data->loseCount,
+                "totalGameCount" => $data->total,
+                "circleGraphRate" => $skill_array,
+                "competitorCircleGraphRate" => $competitor_skill_array,
+                "opportunityGraphRate" => $opportunity_array,
+                "competitorOpportunityGraphRate" => $competitor_opportunity_array,
+            ];
         }
 
         return $response_array;
     }
 
+
+    private function gameLoop($games, $all_user){
+        $winCount = 0;
+        $loseCount = 0;
+        $total = 0;
+        $skill_array = [];
+        $opportunity_array = [];
+        $competitor_skill_array = [];
+        $competitor_opportunity_array = [];
+        $response = [];
+
+        foreach ($games as $game) {
+            if(!$all_user){
+                $total += 1;
+                if($game->result_id == 1){
+                    $winCount += 1;
+                }else if($game->result_id == 2){
+                    $loseCount += 1;
+                }
+            }
+
+            foreach($game->attacks as $attack){
+                if($attack->competitor && !$all_user){
+                    $competitor_skill_array[$attack->skill->name] = $this->addCircleGraphRate($attack->skill->name, $competitor_skill_array);
+                    $competitor_opportunity_array[$attack->skill->opportunity_name] = $this->addCircleGraphRate($attack->skill->opportunity_name, $competitorcompetitor_opportunity_array);
+                }else{
+                    $skill_array[$attack->skill->name] = $this->addCircleGraphRate($attack->skill->name, $skill_array);
+                    $opportunity_array[$attack->skill->opportunity_name] = $this->addCircleGraphRate($attack->skill->opportunity_name, $opportunity_array);
+                }
+            }
+        }
+
+        if($all_user){
+            $response =[
+                "skill_array" => $skill_array,
+                "opportunity_array" => $opportunity_array,
+            ];
+        }else{
+            $response =[
+                "winGameCount" => $winCount,
+                "loseGameCount" => $loseCount,
+                "totalGameCount" => $total,
+                "skill_array" => $skill_array,
+                "opportunity_array" => $opportunity_array,
+                "competitor_skill_array" => $competitor_skill_array,
+                "competitor_opportunity_array" => $competitor_opportunity_array,
+            ];
+        }
+        return $response;
+    }
 
     private function addCircleGraphRate ($skill_name, $array){
         if(array_key_exists($skill_name, $array)){
@@ -362,38 +395,6 @@ class UserController extends Controller
             return 1;
         }
     }
-
-    // private function addBarGraphRate($skill_name, $array, $valid, $defeat){
-    //     if(array_key_exists($skill_name, $array)){
-    //         if($valid){
-    //             return [
-    //                 "無効打"=> $array[$skill_name]["無効打"], 
-    //                 "有効打" => $array[$skill_name]["有効打"] + 1,
-    //                 "被有効打"=> $array[$skill_name]["被有効打"], 
-    //             ];
-    //         }else if($defeat){
-    //             return [
-    //                 "無効打"=> $array[$skill_name]["無効打"], 
-    //                 "有効打" => $array[$skill_name]["有効打"],
-    //                 "被有効打"=> $array[$skill_name]["被有効打"] + 1, 
-    //             ];
-    //         }else{
-    //             return [
-    //                 "無効打"=> $array[$skill_name]["無効打"] + 1, 
-    //                 "有効打" => $array[$skill_name]["有効打"],
-    //                 "被有効打"=> $array[$skill_name]["被有効打"], 
-    //             ];
-    //         }
-    //     }else{
-    //         if($valid){
-    //             return ["無効打" => 0, "有効打" => 1, "被有効打" => 0];
-    //         }else if($defeat){
-    //             return ["無効打" => 0, "有効打" => 0, "被有効打" => 1];
-    //         }else{
-    //             return ["無効打" => 1, "有効打" => 0, "被有効打" => 0];
-    //         }
-    //     }
-    // }
 
     private function otherBuild($array){
 
