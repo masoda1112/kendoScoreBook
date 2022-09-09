@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Response;
 use App\Models\Skill;
+use App\Models\Foul;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -235,11 +236,21 @@ class SkillController extends Controller
 
     public function skill_index(){
         $skills = Skill::all();
+        $fouls = Foul::all();
         $skillList = [["id" => 0, "name" => "選択してください"]];
+        $foulList = [["id" => 0, "name" => "選択してください"]];
         foreach($skills as $skill){
             array_push($skillList, array("id" => $skill->id, "name" => $skill->name));
         }
-        return response()->json($skillList, Response::HTTP_OK);
+        foreach($fouls as $foul){
+            array_push($foulList, array("id" => $foul->id, "name" => $foul->name));
+        }
+        $response = [
+            "skills" => $skillList,
+            "fouls" > $foulList
+        ];
+
+        return response()->json($response, Response::HTTP_OK);
     }
 
     public function show($skillId){
