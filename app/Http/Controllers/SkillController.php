@@ -236,18 +236,14 @@ class SkillController extends Controller
 
     public function skill_index(){
         $skills = Skill::all();
-        $fouls = Foul::all();
         $skillList = [["id" => 0, "name" => "選択してください"]];
-        $foulList = [["id" => 0, "name" => "選択してください"]];
+
         foreach($skills as $skill){
             array_push($skillList, array("id" => $skill->id, "name" => $skill->name));
         }
-        foreach($fouls as $foul){
-            array_push($foulList, array("id" => $foul->id, "name" => $foul->name));
-        }
+
         $response = [
             "skills" => $skillList,
-            "fouls" > $foulList
         ];
 
         return response()->json($response, Response::HTTP_OK);
