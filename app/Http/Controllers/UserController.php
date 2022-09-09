@@ -305,16 +305,13 @@ class UserController extends Controller
         $winCount = 0;
         $loseCount = 0;
         $total = 0;
-        // $gameTime = 0;
-        // $attackCount = 0;
-        // $validAttackCount = 0;
         $circle_graph_rate = [];
-        // $bar_graph_rate = [];
         $competitor_circle_graph_rate = [];
+        $opportunity_graph_rate = [];
+        $competitor_opportunity_graph_rate = [];
 
         foreach ($games as $game) {
             $total += 1;
-            // $gameTime += $game->seconds;
             if($game->result_id == 1){
                 $winCount += 1;
             }else if($game->result_id == 2){
@@ -325,48 +322,32 @@ class UserController extends Controller
                 if($attack->competitor){
                     if($attack->valid){
                         $competitor_circle_graph_rate[$attack->skill->name] = $this->addCircleGraphRate($attack->skill->name, $competitor_circle_graph_rate);
+                        $competitor_opportunity_graph_rate[$attack->skill->opportunity_name] = $this->addCircleGraphRate($attack->skill->opportunity_name, $competitor_opportunity_graph_rate);
                     }
                 }else{
-                    // $attackCount += 1;
-                    $circle_graph_rate[$attack->skill->name] = $this->addCircleGraphRate($attack->skill->name, $circle_graph_rate);
-
+                    // $circle_graph_rate[$attack->skill->name] = $this->addCircleGraphRate($attack->skill->name, $circle_graph_rate);
                     if($attack->valid){
-                        // $validAttackCount += 1;
                         $circle_graph_rate[$attack->skill->name] = $this->addCircleGraphRate($attack->skill->name, $circle_graph_rate);
-                        // if(!$average)$bar_graph_rate[$attack->skill->name] = $this->addBarGraphRate($attack->skill->name, $bar_graph_rate, true, false);
+                        $opportunity_graph_rate[$attack->skill->opportunity_name] = $this->addCircleGraphRate($attack->skill->opportunity_name, $opportunity_graph_rate);
+
                     }
-                    // else if($attack->defeat){
-                    //     if(!$average)$bar_graph_rate[$attack->skill->name] = $this->addBarGraphRate($attack->skill->name, $bar_graph_rate, false, true);
-                    // }else{
-                    //     if(!$average)$bar_graph_rate[$attack->skill->name] = $this->addBarGraphRate($attack->skill->name, $bar_graph_rate, false, false);
-                    // }
                 }
             }
         }
 
         $circle_graph_rate = $this->otherBuild($circle_graph_rate);
         $competitor_circle_graph_rate = $this->otherBuild($competitor_circle_graph_rate);
-        // array_multisort($bar_graph_rate, SORT_DESC);
 
         $response_array = [];
-        // if($average){
-        //     $response_array = array(
-        //         "validAttackCount" => $validAttackCount,
-        //         "attackCount" => $attackCount,
-        //         "totalGameTime" => round($gameTime / 60, 2),
-        //     );
-        // }else
         {
             $response_array = array(
                 "winGameCount" => $winCount,
                 "loseGameCount" => $loseCount,
                 "totalGameCount" => $total,
-                // "validAttackCount" => $validAttackCount,
-                // "attackCount" => $attackCount,
-                // "totalGameTime" => round($gameTime / 60, 2),
                 "circleGraphRate" => $circle_graph_rate,
-                // "barGraphRate" => $bar_graph_rate,
                 "competitorCircleGraphRate" => $competitor_circle_graph_rate,
+                "opportunityGraphRate" => $opportunity_graph_rate,
+                "competitorOpportunityGraphRate" => $competitor_opportunity_graph_rate,
             );
         }
 
