@@ -309,7 +309,7 @@ class UserController extends Controller
         $skill_array = $this->otherBuild($data["skill_array"]);
         $opportunity_array = $this->otherBuild($data["opportunity_array"]);
 
-        if($all_user){
+        if(!$all_user){
             $competitor_skill_array = $this->otherBuild($data["competitor_skill_array"]);
             $competitor_opportunity_array = $this->otherBuild($data["competitor_opportunity_array"]);
         }
