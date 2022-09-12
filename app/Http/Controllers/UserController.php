@@ -363,10 +363,10 @@ class UserController extends Controller
             foreach($game->attacks as $attack){
                 if($attack->competitor && !$all_user){
                     $competitor_skill_array[$attack->skill->name] = $this->addCircleGraphRate($attack->skill->name, $competitor_skill_array);
-                    $competitor_opportunity_array[$attack->skill->opportunity_name] = $this->addCircleGraphRate($attack->skill->opportunity_name, $competitor_opportunity_array);
+                    $competitor_opportunity_array[$attack->opportunity_name] = $this->addCircleGraphRate($attack->opportunity_name, $competitor_opportunity_array);
                 }else{
                     $skill_array[$attack->skill->name] = $this->addCircleGraphRate($attack->skill->name, $skill_array);
-                    $opportunity_array[$attack->skill->opportunity_name] = $this->addCircleGraphRate($attack->skill->opportunity_name, $opportunity_array);
+                    $opportunity_array[$attack->opportunity_name] = $this->addCircleGraphRate($attack->opportunity_name, $opportunity_array);
                 }
             }
         }
