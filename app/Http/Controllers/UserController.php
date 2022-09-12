@@ -122,7 +122,7 @@ class UserController extends Controller
         // game_idはパスから取る
         // getAttackList使うのが良さげ
         $valid_attack_list = [];
-        $competitor_valid_attack_list = [];
+        // $competitor_valid_attack_list = [];
         $valid_attack_skill_name = [];
         $competitor_valid_attack_skill_name = [];
         // $competitor_attack_list = [];
@@ -146,22 +146,13 @@ class UserController extends Controller
                     }
                 }
                 foreach($game->attacks as $attack){
+                    array_push($valid_attack_list, ["part" => $attack->skill->part_name, "competitor" => $attack->competitor]);
                     if($attack->competitor){
-                        if($attack->valid){
-                            array_push($competitor_valid_attack_list, $attack->skill->part_name);
-                            array_push($competitor_valid_attack_skill_name, $attack->skill->name);
-                            // $competitor_attack_list[$attack->skill->name] = $this->addBarGraphRate($attack->skill->name, $competitor_attack_list, true, false);
-                        }
+                        array_push($competitor_valid_attack_skill_name, $attack->skill->name);
+                        // $competitor_attack_list[$attack->skill->name] = $this->addBarGraphRate($attack->skill->name, $competitor_attack_list, true, false);
                     }else{
-                        if($attack->valid){
-                            array_push($valid_attack_list, $attack->skill->part_name);
-                            array_push($valid_attack_skill_name, $attack->skill->name);
-                            // $attack_list[$attack->skill->name] = $this->addBarGraphRate($attack->skill->name, $attack_list, true, false);
-                        }else if($attack->defeat){
-                            // $attack_list[$attack->skill->name] = $this->addBarGraphRate($attack->skill->name, $attack_list, false, true);
-                        }else{
-                            // $attack_list[$attack->skill->name] = $this->addBarGraphRate($attack->skill->name, $attack_list, false, false);
-                        }
+                        array_push($valid_attack_skill_name, $attack->skill->name);
+                        // $attack_list[$attack->skill->name] = $this->addBarGraphRate($attack->skill->name, $attack_list, true, false);
                     }
                 }
             }
@@ -174,7 +165,7 @@ class UserController extends Controller
             "id" => $game_id,
             "competitor_name" => $competitor_name,
             "valid_attack_list" => $valid_attack_list,
-            "competitor_valid_attack_list" => $competitor_valid_attack_list,
+            // "competitor_valid_attack_list" => $competitor_valid_attack_list,
             "valid_attack_skill_name" => $valid_attack_skill_name,
             "competitor_valid_attack_skill_name" => $competitor_valid_attack_skill_name,
             "foul_list" => $foul_list,
