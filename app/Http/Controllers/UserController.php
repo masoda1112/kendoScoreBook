@@ -252,7 +252,7 @@ class UserController extends Controller
         foreach($array as $foul){
             if($foul != null){
                 $foul_array = array(
-                    "name" => $foul_option_list[$foul->action],
+                    "name" => $foul_option_list[$foul["action"]],
                     "competitor" => ($foul["competitor"]=="自分") ? false : true,
                 );
                 array_push($fouls, $foul_array);
