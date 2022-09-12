@@ -206,7 +206,7 @@ class UserController extends Controller
         return response()->json($game ,Response::HTTP_OK);
     }
 
-    public function destroyGame($request){
+    public function destroyGame(Request $request){
         $user = $request->user();
         foreach($user->games as $game){
             if($game->id == $request->game_id){
