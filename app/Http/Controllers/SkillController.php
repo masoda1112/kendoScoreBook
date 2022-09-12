@@ -101,6 +101,10 @@ class SkillController extends Controller
                 "part_name" => "胴",
             ],
             [
+                "name" => "連続技の胴",
+                "part_name" => "胴",
+            ],
+            [
                 "name" => "面応じ胴",
                 "part_name" => "胴",
             ],
@@ -117,11 +121,11 @@ class SkillController extends Controller
                 "part_name" => "胴",
             ],
             [
-                "name" => "飛び込み逆胴",
+                "name" => "フェイント系逆胴",
                 "part_name" => "胴",
             ],
             [
-                "name" => "フェイント系逆胴",
+                "name" => "連続技の逆胴",
                 "part_name" => "胴",
             ],
             [
@@ -129,7 +133,7 @@ class SkillController extends Controller
                 "part_name" => "胴",
             ],
             [
-                "name" => "突き面応じ逆胴",
+                "name" => "突き応じ逆胴",
                 "part_name" => "胴",
             ],
             [
