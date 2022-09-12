@@ -97,15 +97,15 @@ class UserController extends Controller
         $game_list = [];
 
         foreach($user->games as $game){
-            $attack_list = $this->getAttackList($game, true);
+            $attack_list = $this->getAttackList($game);
             array_push(
                 $game_list,
                 array(
                     "id" => $game->id,
                     "competitor_name" => $game->competitor_name,
                     "result_id" => $game->result_id,
-                    "competitor_valid_attack" => $attack_list["competitor"],
-                    "valid_attack" => $attack_list["self"],
+                    // "competitor_valid_attack" => $attack_list["competitor"],
+                    "valid_attack" => $attack_list,
                     "date" => date('Y/m/d', strtotime($game->updated_at))
                 )
             );
@@ -214,20 +214,13 @@ class UserController extends Controller
         return response()->json($game ,Response::HTTP_OK);
     }
 
-    private function getAttackList($game, $valid){
-        $competitorAttacks = [];
-        $selfAttacks = [];
+    private function getAttackList($game){
+        $attacks = [];
         foreach($game->attacks as $attack){
-            if($attack->valid == $valid){
-                if($attack->competitor){
-                    array_push($competitorAttacks, $attack->skill->part_name);
-                }else{
-                    array_push($selfAttacks, $attack->skill->part_name);
-                }
-            }
+            array_push($attacks, ["part" => $attack->skill->part_name, "competitor" => $attack->competitor]);
         }
 
-        return array("competitor" => $competitorAttacks, "self" => $selfAttacks);
+        return $attacks;
     }
 
     private function createAttackLoop($array){
