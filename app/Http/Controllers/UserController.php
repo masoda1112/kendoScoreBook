@@ -236,9 +236,9 @@ class UserController extends Controller
                 if($attack != null){
                     $attack_array = array(
                         // $attack->skill_idと$attack->opportunity_nameとなる
-                        "skill_id" => $attack->action,
-                        "competitor" => ($attack->competitor=="自分") ? false : true,
-                        "opportunity_name" => $attack->opportunity
+                        "skill_id" => $attack["action"],
+                        "competitor" => ($attack["competitor"]=="自分") ? false : true,
+                        "opportunity_name" => $attack["opportunity"]
                     );
                     array_push($attacks, $attack_array);
                 }
@@ -253,7 +253,7 @@ class UserController extends Controller
             if($foul != null){
                 $foul_array = array(
                     "name" => $foul_option_list[$foul->action],
-                    "competitor" => ($foul->competitor=="自分") ? false : true,
+                    "competitor" => ($foul["competitor"]=="自分") ? false : true,
                 );
                 array_push($fouls, $foul_array);
             }
