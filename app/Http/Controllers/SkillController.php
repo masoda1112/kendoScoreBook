@@ -25,196 +25,124 @@ class SkillController extends Controller
     public function defaultCreate(){
         $skillArray = array(
             [
-                "name" => "居着いたところ飛び込み面",
+                "name" => "飛び込み面",
                 "part_name" => "面",
-                "opportunity_name" => "居付き",
-                "description" => "自分から打ち間に入って狙う飛び込み面、片手面など"
             ],
             [
-                "name" => "入り際飛び込み面",
+                "name" => "出鼻面",
                 "part_name" => "面",
-                "opportunity_name" => "入り際",
-                "description" => "相手が打ち間に入ってきた時を狙った飛び込み面、片手面など"
             ],
             [
-                "name" => "避けさせて面", 
-                "part_name" => "面", 
-                "opportunity_name" => "避けたところ",
-                "description" => "自分から打ち間に入って打つ裏面、担ぎ面、小手フェイント面、胴フェイント面など"
+                "name" => "フェイント系面",
+                "part_name" => "面",
             ],
             [
-                "name" => "二段技面", 
-                "part_name" => "面", 
-                "opportunity_name" => "二段技",
-                "description" => "小手面、面々、突き面など"
+                "name" => "面応じ面",
+                "part_name" => "面",
             ],
             [
-                "name" => "出鼻面", 
-                "part_name" => "面", 
-                "opportunity_name" => "出鼻",
-                "description" => "相手の出頭を狙った飛び込み面"
+                "name" => "小手応じ面",
+                "part_name" => "面",
             ],
             [
-                "name" => "面応じ系面", 
-                "part_name" => "面", 
-                "opportunity_name" => "応じ技",
-                "description" => "面返し面、面抜き面など"
+                "name" => "胴応じ面",
+                "part_name" => "面",
             ],
             [
-                "name" => "小手応じ系面", 
-                "part_name" => "面", 
-                "opportunity_name" => "応じ技",
-                "description" => "小手返し面、小手すりあげ面、小手抜き面、相小手面、小手打ち落とし面など"
+                "name" => "突き応じ面",
+                "part_name" => "面",
             ],
             [
-                "name" => "突き応じ系面", 
-                "part_name" => "面", 
-                "opportunity_name" => "応じ技",
-                "description" => "突き返し面、突き抜き面など"
+                "name" => "連続技の面",
+                "part_name" => "面",
             ],
             [
-                "name" => "引き面", 
-                "part_name" => "面", 
-                "opportunity_name" => "鍔迫り合い",
-                "description" => "鍔迫り合いからの引面"
+                "name" => "引面",
+                "part_name" => "面",
             ],
             [
-                "name" => "近間面", 
-                "part_name" => "面", 
-                "opportunity_name" => "近間",
-                "description" => "お互いに避けながら間合いを詰めるなどして、近い間合いができた時を狙った面"
-            ],
-            [
-                "name" => "後打ちの面", 
-                "part_name" => "面", 
-                "opportunity_name" => "後打ち",
-                "description" => "どちらかの選手が技を出した後の機会を狙った面"
-            ],
-            [
-                "name" => "攻め込んで小手", 
-                "part_name" => "小手", 
-                "opportunity_name" => "避けたところ",
-                "description" => "自分から打ち間に入ってうつ、飛び込み小手、面小手、かつぎ小手、払い小手、片手小手など"
-            ],
-            [
-                "name" => "入り際小手", 
-                "part_name" => "小手", 
-                "opportunity_name" => "入り際",
-                "description" => "相手が打ち間に入ってきた時を狙った飛び込み小手、面小手、片手小手など"
-            ],
-            [
-                "name" => "出鼻小手", 
+                "name" => "飛び込み小手",
                 "part_name" => "小手",
-                "opportunity_name" => "出鼻",
-                "description" => "相手の出頭を狙った小手、片手小手など"
             ],
             [
-                "name" => "面応じ系小手", 
-                "part_name" => "小手", 
-                "opportunity_name" => "応じ技",
-                "description" => "面返し小手、面抜き小手など"
+                "name" => "出鼻小手",
+                "part_name" => "小手",
             ],
             [
-                "name" => "小手応じ系小手", 
-                "part_name" => "小手", 
-                "opportunity_name" => "応じ技",
-                "description" => "小手返し小手、小手抜き小手、小手打ち落とし小手など"
+                "name" => "フェイント系小手",
+                "part_name" => "小手",
             ],
             [
-                "name" => "突き応じ系小手", 
-                "part_name" => "小手", 
-                "opportunity_name" => "応じ技",
-                "description" => "突き抜き小手など"
+                "name" => "連続技の小手",
+                "part_name" => "小手",
             ],
             [
-                "name" => "後打ちの小手", 
-                "part_name" => "小手", 
-                "opportunity_name" => "後打ち",
-                "description" => "どちらかの選手が技を出した後の機会を狙った小手"
+                "name" => "引小手",
+                "part_name" => "小手",
             ],
             [
-                "name" => "引き小手", 
-                "part_name" => "小手", 
-                "opportunity_name" => "鍔迫り合い",
-                "description" => "鍔迫り合いからの引き小手"
+                "name" => "面応じ小手",
+                "part_name" => "小手",
             ],
             [
-                "name" => "近間小手", 
-                "part_name" => "小手", 
-                "opportunity_name" => "近間",
-                "description" => "お互いに避けながら間合いを詰めるなどして、近い間合いができた時を狙った小手"
+                "name" => "小手応じ小手",
+                "part_name" => "小手",
             ],
             [
-                "name" => "避けさせて胴", 
+                "name" => "胴応じ小手",
+                "part_name" => "小手",
+            ],
+            [
+                "name" => "飛び込み胴",
                 "part_name" => "胴",
-                "opportunity_name" => "避けたところ",
-                "description" => "相手が避けるところを狙った胴"
             ],
             [
-                "name" => "応じ系胴", 
-                "part_name" => "胴", 
-                "opportunity_name" => "応じ技",
-                "description" => "面返し胴、面抜き胴など"
-            ],
-            [
-                "name" => "後打ちの胴", 
-                "part_name" => "胴", 
-                "opportunity_name" => "後打ち",
-                "description" => "どちらかの選手が技を出した後の機会を狙った胴"
-            ],
-            [
-                "name" => "引き胴", 
+                "name" => "フェイント系胴",
                 "part_name" => "胴",
-                "opportunity_name" => "鍔迫り合い",
-                "description" => "鍔迫り合いからの引き胴"
             ],
             [
-                "name" => "近間胴", 
-                "part_name" => "胴", 
-                "opportunity_name" => "近間",
-                "description" => "お互いに避けながら間合いを詰めるなどして、近い間合いができた時を狙った胴"
+                "name" => "面応じ胴",
+                "part_name" => "胴",
             ],
             [
-                "name" => "避けさせて逆胴",
-                "part_name" => "胴", 
-                "opportunity_name" => "避けたところ",
-                "description" => "相手が避けるところを狙った逆胴"
+                "name" => "突き応じ胴",
+                "part_name" => "胴",
             ],
             [
-                "name" => "応じ系逆胴", 
-                "part_name" => "胴", 
-                "opportunity_name" => "応じ技",
-                "description" => "抜き逆胴、面返し逆胴など"
+                "name" => "引き胴",
+                "part_name" => "胴",
             ],
             [
-                "name" => "後打ちの逆胴", 
-                "part_name" => "胴", 
-                "opportunity_name" => "後打ち",
-                "description" => "どちらかの選手が技を出した後の機会を狙った逆胴"
+                "name" => "飛び込み逆胴",
+                "part_name" => "胴",
             ],
             [
-                "name" => "引き逆胴", 
-                "part_name" => "胴", 
-                "opportunity_name" => "鍔迫り合い",
-                "description" => "鍔迫り合いからの引き逆胴"
+                "name" => "飛び込み逆胴",
+                "part_name" => "胴",
             ],
             [
-                "name" => "近間逆胴", 
-                "part_name" => "胴", 
-                "opportunity_name" => "近間",
-                "description" => "お互いに避けながら間合いを詰めるなどして、近い間合いができた時を狙った逆胴"
+                "name" => "フェイント系逆胴",
+                "part_name" => "胴",
             ],
             [
-                "name" => "突き", 
-                "part_name" => "突き", 
-                "opportunity_name" => "居付き",
-                "description" => "両手突き、片手突き"
+                "name" => "面応じ逆胴",
+                "part_name" => "胴",
             ],
             [
-                "name" => "後打ちの突き", 
-                "part_name" => "突き", 
-                "opportunity_name" => "後打ち",
-                "description" => "どちらかの選手が技を出した後の機会を狙った逆胴"
+                "name" => "突き面応じ逆胴",
+                "part_name" => "胴",
+            ],
+            [
+                "name" => "引き逆胴",
+                "part_name" => "胴",
+            ],
+            [
+                "name" => "両手突き",
+                "part_name" => "突き",
+            ],
+            [
+                "name" => "片手突き",
+                "part_name" => "突き",
             ],
         );
 
@@ -227,8 +155,7 @@ class SkillController extends Controller
     function skills_create ($value){
         Skill::create([
             "name" => $value["name"],
-            "part_name" => $value["part_name"],
-            "opportunity_name" => $value["opportunity_name"]
+            "part_name" => $value["part_name"]
         ]);
     }
 
