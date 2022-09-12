@@ -238,7 +238,9 @@ class UserController extends Controller
                         // $attack->skill_idと$attack->opportunity_nameとなる
                         "skill_id" => $attack["action"],
                         "competitor" => ($attack["competitor"]=="自分") ? false : true,
-                        "opportunity_name" => $attack["opportunity"]
+                        "opportunity_name" => $attack["opportunity"],
+                        "defeat" => false,
+                        "valid" => true
                     );
                     array_push($attacks, $attack_array);
                 }
