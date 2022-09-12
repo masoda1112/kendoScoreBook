@@ -402,11 +402,13 @@ class UserController extends Controller
 
         array_multisort($array, SORT_DESC);
 
-        $array_other = array_slice($array, 10, count($array));
-        $other = array_sum($array_other);
-
-        $array = array_slice($array, 0, 9);
-        $array["その他"] = $other;
+        if(count($array) > 9){
+            $array_other = array_slice($array, 10, count($array));
+            $other = array_sum($array_other);
+    
+            $array = array_slice($array, 0, 9);
+            $array["その他"] = $other;
+        }
         
         return $array;
     }
