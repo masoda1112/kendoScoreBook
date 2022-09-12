@@ -21,6 +21,7 @@ Route::get('/', function () {
 
 Route::group(["middleware" => ["auth:api"]], function () {
     Route::get("/allUserData", [UserController::class, "allUserData"]);
+    Route::get("/{userName}/{gameId}/destroy", [UserController::class, "destroyGame"]);
     Route::get("/{userName}", [UserController::class, "index"]);
     Route::get("/{userName}/skills", [SkillController::class, "skill_index"]);
     Route::get("/{userName}/games", [UserController::class, "getGameIndex"]);
