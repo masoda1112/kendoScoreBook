@@ -196,20 +196,20 @@ class UserController extends Controller
         ]);
         
         // attack配列作成
-        $validAttacks = $this->createAttackLoop($request->valid_attacks, false, true, false);
-        $competitorValidAttacks = $this->createAttackLoop($request->competitor_valid_attacks, true, true, false);
+        $validAttacks = $this->createAttackLoop($request->valid_attacks);
+        // $competitorValidAttacks = $this->createAttackLoop($request->competitor_valid_attacks, true, true, false);
         // $attacks = $this->createAttackLoop($request->attacks, false, false, false);
         // $defeatAttacks = $this->createAttackLoop($request->defeat_attacks, false, false, true);
-        $totalAttacksArray = array_merge($validAttacks, $competitorValidAttacks);
+        // $totalAttacksArray = array_merge($validAttacks, $competitorValidAttacks);
 
         // foul配列作成
-        $fouls = $this->createFoulLoop($request->fouls, false);
-        $competitorFouls = $this->createFoulLoop($request->competitor_fouls, true);
-        $totalFoulArray = array_merge($fouls, $competitorFouls);
+        $fouls = $this->createFoulLoop($request->fouls);
+        // $competitorFouls = $this->createFoulLoop($request->competitor_fouls, true);
+        // $totalFoulArray = array_merge($fouls, $competitorFouls);
 
         //attack,foul作成
-        $game->attacks()->createMany($totalAttacksArray);
-        $game->fouls()->createMany($totalFoulArray);
+        $game->attacks()->createMany($validAttacks);
+        $game->fouls()->createMany($fouls);
         
         return response()->json($game ,Response::HTTP_OK);
     }
@@ -230,15 +230,15 @@ class UserController extends Controller
         return array("competitor" => $competitorAttacks, "self" => $selfAttacks);
     }
 
-    private function createAttackLoop($array, $competitor, $valid, $defeat){
+    private function createAttackLoop($array){
         $attacks = [];
             foreach($array as $attack){
                 if($attack != null){
                     $attack_array = array(
-                        "skill_id" => $attack,
-                        "competitor" => $competitor,
-                        "valid" => $valid,
-                        "defeat" => $defeat
+                        // $attack->skill_idと$attack->opportunity_nameとなる
+                        "skill_id" => $attack->action,
+                        "competitor" => ($attack->competitor=="自分") ? false : true,
+                        "opportunity_name" => $attack->opportunity
                     );
                     array_push($attacks, $attack_array);
                 }
@@ -246,14 +246,14 @@ class UserController extends Controller
         return $attacks;
     }
 
-    private function createFoulLoop($array, $competitor){
+    private function createFoulLoop($array){
         $fouls = [];
         $foul_option_list = ["選択してください", "場外反則", "竹刀落とし", "時間空費", "その他"];
         foreach($array as $foul){
             if($foul != null){
                 $foul_array = array(
-                    "name" => $foul_option_list[$foul],
-                    "competitor" => $competitor,
+                    "name" => $foul_option_list[$foul->action],
+                    "competitor" => ($foul->competitor=="自分") ? false : true,
                 );
                 array_push($fouls, $foul_array);
             }
