@@ -113,7 +113,7 @@ class UserController extends Controller
 
         return response()->json([
             'user' => $user->name,
-            'games'=> $game_list
+            'games'=> array_multisort($game_list, SORT_DESC)
         ], Response::HTTP_OK);
     }
 
