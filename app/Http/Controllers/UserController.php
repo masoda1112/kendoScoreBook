@@ -110,10 +110,11 @@ class UserController extends Controller
                 )
             );
         }
+        array_multisort($game_list, SORT_DESC);
 
         return response()->json([
             'user' => $user->name,
-            'games'=> array_multisort($game_list, SORT_DESC)
+            'games'=> $game_list
         ], Response::HTTP_OK);
     }
 
